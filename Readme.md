@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Юлия Семенуха](https://up.htmlacademy.ru/javascript/18/user/463301).
-* Наставник: `Неизвестно`.
+* Наставник: `Без наставника`.
 
 ---
 
