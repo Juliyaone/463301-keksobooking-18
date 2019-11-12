@@ -11,6 +11,7 @@
   var form = document.querySelector('.ad-form');
   var mapPinsParent = document.querySelector('.map__pins');
   var adFormHeader = adForm.querySelector('.ad-form-header');
+  var pinOfHousing;
 
   var addsAttributeDisabled = function (elem) { // Добавляет атрибут disabled
     for (var i = 0; i < elem.length; i++) {
@@ -35,8 +36,8 @@
 
   // Запомнили стартовые координаты метки
   var startCoords = {
-    x: '570px',
-    y: '375px'
+    x: '570',
+    y: '375'
   };
 
 
@@ -73,6 +74,13 @@
 
   window.deactivatesPage();
 
+  var removeElements = function () {
+    var elements = document.querySelectorAll('.map__pin:not(.map__pin--main');
+    elements.forEach(function (it) {
+      it.remove();
+    });
+  };
+
 
   // Активируем карту
   var activatesPageHandler = function () { // функция для обработчика событий, активирует карту и формы
@@ -85,14 +93,67 @@
     removeAttributeDisabled(features);
     adFormHeader.disabled = false;
     adFormHeader.disabled = '';
+    window.backend.load(window.slider.successHandler, window.slider.errorHandler);
 
-    mapPinMain.removeEventListener('mousedown', function () {
-      activatesPageHandler();
+    mapPinMain.removeEventListener('mousedown', activatesPageHandler);
+  };
+
+  mapPinMain.addEventListener('mousedown', activatesPageHandler);
+
+  mapFilters.addEventListener('click', function () {
+    closeCard();
+  });
+
+  mapFilters.addEventListener('change', function () {
+    removeElements();
+    closeCard();
+    window.render.render(window.similar.filters(window.pin.allPins));
+    openCard();
+    updateCards(window.pin.allPins);
+  });
+
+  var closeCard = function () {
+    var mapCard = document.querySelector('.map__card'); // Проверяем есть ли открытая карточка если есть, то удаляем ее
+    if (mapCard) {
+      mapCard.remove();
+    }
+  };
+
+  // Открываем карточку, клик по пину без потери окружения
+  var addClickListener = function (mapPinButton) {
+    mapPinButton.addEventListener('click', function () {
+      deactivatesPin();
+      mapPinButton.classList.add('map__pin--active');
+      var altPinValue = mapPinButton.querySelector('img').alt;
+      pinOfHousing = altPinValue;
+      closeCard();
+      updateCards();
     });
   };
 
-  mapPinMain.addEventListener('mousedown', function () {
-    activatesPageHandler();
-  });
+  var openCard = function () {
+    var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    for (var i = 0; i < mapPin.length; i++) { // Открываем карточку по клику на пин, без потери окружения
+      var mapPinButton = mapPin[i];
+      addClickListener(mapPinButton); // карточка отрисовалась
+    }
+  };
 
+  var deactivatesPin = function () { // Деактивирует пин при клике на другой пин
+    var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+
+    for (var i = 0; i < mapPin.length; i++) {
+      var mapPinButton = mapPin[i];
+      if (mapPinButton.classList.contains('map__pin--active')) {
+        mapPinButton.classList.remove('map__pin--active');
+      }
+    }
+  };
+
+  var updateCards = function () { // Отрисовывает карточку
+    var sameCard = window.pin.allPins.filter(function (it) {
+      return it.offer.title === pinOfHousing;
+    });
+    window.card.renderCard(sameCard);
+  };
 })();

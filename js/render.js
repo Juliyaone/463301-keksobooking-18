@@ -20,6 +20,7 @@
 
   var similarList = document.querySelector('.map__pins');
 
+
   var render = function (data) {
 
     var takeNumber = data.length > PIN_QUANTITY ? PIN_QUANTITY : data.length;

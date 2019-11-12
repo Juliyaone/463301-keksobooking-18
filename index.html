@@ -104,7 +104,7 @@
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="address">Адрес</label>
-          <input id="address" name="address" type="text">
+          <input id="address" name="address" type="text" required>
         </fieldset>
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="type">Тип жилья</label>
@@ -117,7 +117,7 @@
         </fieldset>
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="price">Цена за ночь, руб.</label>
-          <input id="price" name="price" type="number" placeholder="5000" min="0" max="1000000" pattern="[0-9]" required>
+          <input id="price" name="price" type="number" placeholder="5000" min="1000" max="1000000" pattern="[0-9]" required>
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--time">
           <label class="ad-form__label" for="timein">Время заезда и выезда</label>
@@ -138,7 +138,7 @@
             <option value="1" selected>1 комната</option>
             <option value="2">2 комнаты</option>
             <option value="3">3 комнаты</option>
-            <option value="100" disabled>100 комнат</option>
+            <option value="100">100 комнат</option>
           </select>
         </fieldset>
         <fieldset class="ad-form__element">
@@ -147,7 +147,7 @@
             <option value="3" selected>для 3 гостей</option>
             <option value="2">для 2 гостей</option>
             <option value="1">для 1 гостя</option>
-            <option value="0" disabled>не для гостей</option>
+            <option value="0">не для гостей</option>
           </select>
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide features">
@@ -250,11 +250,11 @@
 <script src="js/util.js"></script>
 <script src="js/backend.js"></script>
 <script src="js/save.js"></script>
+<script src="js/slider.js"></script>
 <script src="js/card.js"></script>
 <script src="js/render.js"></script>
 <script src="js/similar.js"></script>
 <script src="js/active-form.js"></script>
-<script src="js/slider.js"></script>
 <script src="js/validation-form.js"></script>
 <script src="js/foto-add.js"></script>
 </body>
