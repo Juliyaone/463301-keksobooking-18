@@ -1,12 +1,7 @@
 'use strict';
 
 (function () {
-  var map = document.querySelector('.map');
   var form = document.querySelector('.ad-form');
-  var adForm = document.querySelector('.ad-form');
-  var mapFilters = document.querySelector('.map__filters');
-  var fieldsetInput = document.querySelectorAll('fieldset');
-
   var main = document.querySelector('main');
 
   var successTemplate = document
@@ -19,10 +14,8 @@
     main.appendChild(element);
   };
 
-  var loadHandler = function () { // При успешной загрузке данных на сервер, закрывает окно
-    window.deactivatesPage(); //Деактивирует страницу
-    // тут нужно вызвать функцию которая будет очищать поля формы, удалять метки похожих объявлений и карточку активного объявления, верните метку адреса в исходное положение, не забыв скорректировать координаты, отображаемые в поле «Адрес».
-
+  var loadHandler = function () {
+    window.deactivatesPage();
     createSuccess();
 
     var popupEscPressHandler = function (evt) { // Обработчик события esc закрывает всплывающее окно success, после отправки формы
@@ -83,7 +76,7 @@
   });
 
   form.addEventListener('reset', function () { // Обработчик клика на кнопку очистить
-    window.deactivatesPage(); //Деактивирует страницу
+    window.deactivatesPage();
   });
 
 })();

@@ -87,20 +87,33 @@
   var adFormGuest = document.querySelector('#capacity'); // гостей
 
 
-  var timeSync = function (select1, select2) {
-      select2.value = select1.value;
+  var roomSync = function (select1, select2) {
+    select2.value = select1.value;
   };
 
   adFormRooms.addEventListener('change', function () {
-    timeSync(adFormRooms, adFormGuest);
+    roomSync(adFormRooms, adFormGuest);
   });
 
   adFormGuest.addEventListener('change', function () {
-    timeSync(adFormGuest, adFormRooms);
+    roomSync(adFormGuest, adFormRooms);
   });
 
+  // Сброс полей формы и фильтра с помощью Reset
 
+  var reset = document.querySelector('.ad-form__reset');
+  var housingType = document.querySelector('#housing-type');
+  var housingPrice = document.querySelector('#housing-price');
+  var housingRooms = document.querySelector('#housing-rooms');
+  var housingGuests = document.querySelector('#housing-guests');
 
+  var resetPageHandler = function () {
+    housingType.value = 'any';
+    housingPrice.value = 'any';
+    housingRooms.value = 'any';
+    housingGuests.value = 'any';
+    window.deactivatesPage();
+  };
 
-
+  reset.addEventListener('click', resetPageHandler);
 })();

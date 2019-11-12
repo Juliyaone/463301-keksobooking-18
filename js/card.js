@@ -1,7 +1,6 @@
 'use strict';
 (function () {
   var map = document.querySelector('.map');
-  var mapPins = map.querySelector('.map__pins');
   var referenceElement = document.querySelector('.map__filters-container');
 
   var similarCardTemplate = document.querySelector('#card');
@@ -14,8 +13,8 @@
 
     for (var i = 0; i < mapPin.length; i++) { // Удаляем CSS-класс активации пина
       var mapPinButton = mapPin[i];
-      mapPinButton.classList.remove('map__pin--active')
-     }
+      mapPinButton.classList.remove('map__pin--active');
+    }
   };
 
   var getFeatures = function (elem, arr, it) { // Проверяем есть ли в массиве нужный елемент features
@@ -24,12 +23,12 @@
     }
   };
 
-    var HousingType = {
-      FLATE: "Квартира",
-      PALACE: "Дворец",
-      HOUSE: "Дом",
-      BUNGALO: "Бунгало"
-    };
+  var HousingType = {
+    FLATE: 'Квартира',
+    PALACE: 'Дворец',
+    HOUSE: 'Дом',
+    BUNGALO: 'Бунгало'
+  };
 
   var getTypeHouse = function (type, element) {
     if (type === 'flat') {
@@ -52,15 +51,15 @@
 
     cloneElementStyle.querySelector('.popup__title').textContent = card.offer.title;
     cloneElementStyle.querySelector('.popup__text--address').textContent = card.offer.address;
-    cloneElementStyle.querySelector('.popup__text--price').textContent = card.offer.price + "₽/ночь";
+    cloneElementStyle.querySelector('.popup__text--price').textContent = card.offer.price + '₽/ночь';
 
     var type = card.offer.type;
     var typecloneElement = cloneElementStyle.querySelector('.popup__type');
     getTypeHouse(type, typecloneElement);
 
-    cloneElementStyle.querySelector('.popup__text--capacity').textContent = card.offer.rooms + " " + "комнаты для" + " " + card.offer.guests + " " + "гостей";
+    cloneElementStyle.querySelector('.popup__text--capacity').textContent = card.offer.rooms + ' ' + 'комнаты для' + ' ' + card.offer.guests + ' ' + 'гостей';
 
-    cloneElementStyle.querySelector('.popup__text--time').textContent = "Заезд после " + card.offer.checkin + ", " + "выезд до " + card.offer.checkout;
+    cloneElementStyle.querySelector('.popup__text--time').textContent = 'Заезд после ' + card.offer.checkin + ', ' + 'выезд до ' + card.offer.checkout;
 
     var features = card.offer.features; // находим массив с features
     var popupFeatureWifi = cloneElementStyle.querySelector('.popup__feature--wifi'); // находим эелементы с нужным классом
@@ -90,7 +89,7 @@
         img.src = arrPhotos[i];
         img.width = 45;
         img.height = 40;
-        img.alt = "Фотография жилья";
+        img.alt = 'Фотография жилья';
         img.classList.add('popup__photo');
         popupPhotos.appendChild(img);
       }
@@ -100,14 +99,12 @@
     popupAvatar.src = card.author.avatar;
 
     var popupClose = cloneElementStyle.querySelector('.popup__close'); // Обработчик закрытия карточки
-    popupClose.addEventListener('click', cardCloseHandler);
+    popupClose.addEventListener('click', cardCloseHandler); // Обработчик закрытия карточки
 
     return cloneElementStyle;
   };
 
-  var mapCard = document.querySelector('.map__card');
-
-  window.renderCard = function (data) {
+  var renderCard = function (data) {
     var takeNumber = data.length > 5 ? 5 : data.length;
     var fragmentCard = document.createDocumentFragment();
     for (var i = 0; i < takeNumber; i++) {
@@ -116,4 +113,9 @@
     var childrenFragmentCard = fragmentCard;
     map.insertBefore(childrenFragmentCard, referenceElement);
   };
+
+  window.card = {
+    renderCard: renderCard
+  };
+
 })();

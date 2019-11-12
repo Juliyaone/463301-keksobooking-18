@@ -5,13 +5,11 @@
   var fieldAddress = document.getElementById('address');
   var mapPinMain = document.querySelector('.map__pin--main');
 
-  fieldAddress.value = mapPinMain.style.left + ', ' + mapPinMain.style.top; // находим координаты главной метки в HTML-коде, для НЕактивной страницы, записываем их в поле адрес
+  fieldAddress.value = mapPinMain.style.left + 22 + ', ' + mapPinMain.style.top; // находим координаты главной метки в HTML-коде, для НЕактивной страницы, записываем их в поле адрес
 
   var MAIN_PIN_WIDTH = 62;
   var MAIN_PIN_HEIGHT = 82;
   var WIDTH_MAP = document.querySelector('.map').offsetWidth;
-  // var LOCATION_MIN_X = 60;
-  // var LOCATION_MAX_X = 1140;
   var LOCATION_MAX_Y = 630;
   var LOCATION_MIN_Y = 130;
 

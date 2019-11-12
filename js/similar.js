@@ -1,15 +1,82 @@
 'use strict';
 (function () {
 
-  var typeOfHousing;
   var pinOfHousing;
-  var minPriceOfHousing;
-  var maxPriceOfHousing;
-  var middlePriceOfHousing;
-  var any;
   var allPins = [];
-  var map = document.querySelector('.map');
-  var mapPins = document.querySelector('.map__pins');
+
+  var mapFilters = document.querySelector('.map__filters');
+  var mapFeatures = mapFilters.querySelectorAll('#housing-features input');
+  var housingType = mapFilters.querySelector('#housing-type');
+  var housingPrice = mapFilters.querySelector('#housing-price');
+  var housingRooms = mapFilters.querySelector('#housing-rooms');
+  var housingGuests = mapFilters.querySelector('#housing-guests');
+
+  var priceMap = {
+    LOW: 'low',
+    MIDDLE: 'middle',
+    HIGH: 'high',
+    MINPRICE: 10000,
+    MAXPRICE: 50000
+  };
+
+  var getHousingType = function (el) {
+    return housingType.value === 'any' ? true : el.offer.type === housingType.value;
+  };
+
+  var getHousingRooms = function (el) {
+    return housingRooms.value === 'any' ? true : el.offer.rooms === Number(housingRooms.value);
+  };
+
+  var getHousingGuests = function (el) {
+    return housingGuests.value === 'any' ? true : el.offer.guests === Number(housingGuests.value);
+  };
+
+  var getHousingPrice = function (el) {
+    switch (housingPrice.value) {
+      case priceMap.LOW: return el.offer.price <= priceMap.MINPRICE;
+      case priceMap.MIDDLE: return el.offer.price >= priceMap.MINPRICE && el.offer.price <= priceMap.MAXPRICE;
+      case priceMap.HIGH: return el.offer.price >= priceMap.MAXPRICE;
+      default: return true;
+    }
+  };
+
+
+  var getFeaturesList = function (el) {
+    return Array.from(mapFeatures).filter(function (element) {
+      return element.checked;
+    }).map(function (element) {
+      return element.value;
+    }).every(function (currentFeature) {
+      return el.offer.features.includes(currentFeature);
+    });
+  };
+
+  var filters = function (data) {
+    return data.filter(function (el) {
+      return getHousingType(el) &&
+             getHousingPrice(el) &&
+             getHousingRooms(el) &&
+             getHousingGuests(el) &&
+             getFeaturesList(el);
+    }).slice(0, 5);
+  };
+
+  var filteredPins = function () {
+    mapFilters.addEventListener('change', function () {
+      removeElements();
+      closeCard();
+      window.render.render(filters(allPins));
+      openCard(allPins);
+      updateCards(allPins);
+    });
+  };
+
+  var removeElements = function () {
+    var elements = document.querySelectorAll('.map__pin:not(.map__pin--main');
+    elements.forEach(function (it) {
+      it.remove();
+    });
+  };
 
   var closeCard = function () {
     var mapCard = document.querySelector('.map__card'); // Проверяем есть ли открытая карточка если есть, то удаляем ее
@@ -18,10 +85,25 @@
     }
   };
 
-  var Price = { ///////////////////////////////////////////////////////////
-    LOW: 10000,
-    HEIGHT: 50000
-  }
+  // Открываем карточку, клик по пину без потери окружения
+  var addClickListener = function (mapPinButton) {
+    mapPinButton.addEventListener('click', function () {
+      deactivatesPin();
+      mapPinButton.classList.add('map__pin--active');
+      var altPinValue = mapPinButton.querySelector('img').alt;
+      pinOfHousing = altPinValue;
+      closeCard();
+      updateCards();
+    });
+  };
+
+  var openCard = function () {
+    var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    for (var i = 0; i < mapPin.length; i++) { // Открываем карточку по клику на пин, без потери окружения
+      var mapPinButton = mapPin[i];
+      addClickListener(mapPinButton); // карточка отрисовалась
+    }
+  };
 
   var deactivatesPin = function () { // Деактивирует пин при клике на другой пин
     var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
@@ -34,120 +116,16 @@
     }
   };
 
-  var addClickListener = function (mapPinButton) { // Открываем карточку, клик по пину без потери окружения
-    mapPinButton.addEventListener('click', function (evt) {
-      deactivatesPin();
-      mapPinButton.classList.add('map__pin--active');
-      var altPinValue = mapPinButton.querySelector('img').alt;
-      pinOfHousing = altPinValue;
-      closeCard();
-      updateCards(); // Отрисовываем новую карточку
-    });
-  };
-
-
-  var updatePins = function () {
-    var sameTypePin = allPins.filter(function (it) {
-      return it.offer.type === typeOfHousing;
-    });
-    window.render(sameTypePin);
-
-    var samePriceMinPin = allPins.filter(function (it) {
-    return it.offer.price === minPriceOfHousing;
-    });
-    window.render(samePriceMinPin);
-
-    var samePriceMaxPin = allPins.filter(function (it) {
-    return it.offer.price === maxPriceOfHousing;
-    });
-    window.render(samePriceMaxPin);
-
-    var samePriceMiddlePin = allPins.filter(function (it) {
-    return it.offer.price === middlePriceOfHousing;
-    });
-    window.render(samePriceMiddlePin);
-
-    var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-
-    for (var i = 0; i < mapPin.length; i++) { // Открываем карточку по клику на пин, без потери окружения
-      var mapPinButton = mapPin[i];
-      addClickListener(mapPinButton); // карточка отрисовалась
-     }
-  };
-
-  var updateCards = function () {
+  var updateCards = function () { // Отрисовывает карточку
     var sameCard = allPins.filter(function (it) {
       return it.offer.title === pinOfHousing;
     });
-    window.renderCard(sameCard);
+    window.card.renderCard(sameCard);
   };
-
-  var typeFilter = document.querySelector('#housing-type');
-
-  typeFilter.addEventListener('change', function () {
-    closeCard();
-    var mapPins = Array.from(document.querySelectorAll('.map__pin:not(.map__pin--main)'));
-    var mapPinsParent = document.querySelector('.map__pins');
-    mapPins.forEach(function (it) {  // Удаляет пины после отправки
-      mapPinsParent.removeChild(it);
-    });
-    var typeFilterIndex = document.querySelector('#housing-type').options.selectedIndex;
-    var valueTypeFilter = document.querySelector('#housing-type').options[typeFilterIndex].value;
-    typeFilter.value = valueTypeFilter;
-    typeOfHousing = valueTypeFilter;
-    updatePins();
-  });
-
-
-  var priceFilter = document.querySelector('#housing-price');
-
-  priceFilter.addEventListener('change', function () {
-    closeCard();
-    var mapPins = Array.from(document.querySelectorAll('.map__pin:not(.map__pin--main)'));
-    var mapPinsParent = document.querySelector('.map__pins');
-    mapPins.forEach(function (it) {  // Удаляет пины после отправки
-      mapPinsParent.removeChild(it);
-    });
-    var priceFilterIndex = document.querySelector('#housing-price').options.selectedIndex;
-    var valuePriceFilter = document.querySelector('#housing-price').options[priceFilterIndex].value;
-    console.log(valuePriceFilter);
-    priceFilter.value = valuePriceFilter;
-
-    if(valuePriceFilter === 'low') {
-      minPriceOfHousing = valuePriceFilter;
-    }
-    if(valuePriceFilter = 'high') {
-      maxPriceOfHousing = valuePriceFilter;
-    }
-    if(valuePriceFilter = 'middle') {
-      middlePriceOfHousing = valuePriceFilter;
-    } else {
-      any = valuePriceFilter;
-    }
-    updatePins();
-  });
-
-  // Сброс полей формы и фильтра с помощью Reset
-
-  var reset = document.querySelector('.ad-form__reset');
-  var housingType = document.querySelector('#housing-type');
-  var housingPrice = document.querySelector('#housing-price');
-  var housingRooms = document.querySelector('#housing-rooms');
-  var housingGuests = document.querySelector('#housing-guests');
-
-  var resetPageHandler = function () {
-    housingType.value = "any";
-    housingPrice.value = "any";
-    housingRooms.value = "any";
-    housingGuests.value = "any";
-    window.deactivatesPage();
-  };
-
-  reset.addEventListener('click', resetPageHandler);
 
   var successHandler = function (data) {
     allPins = data;
-    updatePins();
+    filteredPins(allPins);
   };
 
   var errorHandler = function (errorMessage) {

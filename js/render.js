@@ -20,13 +20,19 @@
 
   var similarList = document.querySelector('.map__pins');
 
-  window.render = function (data) {
+  var render = function (data) {
 
     var takeNumber = data.length > PIN_QUANTITY ? PIN_QUANTITY : data.length;
+    var fragment = document.createDocumentFragment();
 
     for (var i = 0; i < takeNumber; i++) {
-      similarList.appendChild(renderPin(data[i]));
+      fragment.appendChild(renderPin(data[i]));
     }
+    similarList.appendChild(fragment);
+    return similarList;
   };
 
+  window.render = {
+    render: render
+  };
 })();

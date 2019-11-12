@@ -8,24 +8,21 @@
   var mapFilters = document.querySelector('.map__filters');
   var mapFilter = mapFilters.querySelectorAll('.map__filter');
   var features = document.getElementsByName('features');
-  var resetButton = document.querySelector('.ad-form__reset');
-  var fieldAddress = document.getElementById('address');
-  var housingType = document.getElementById('housing-type');
   var form = document.querySelector('.ad-form');
   var mapPinsParent = document.querySelector('.map__pins');
   var adFormHeader = adForm.querySelector('.ad-form-header');
 
   var addsAttributeDisabled = function (elem) { // Добавляет атрибут disabled
-    for(var i = 0; i < elem.length; i++) {
+    for (var i = 0; i < elem.length; i++) {
       elem[i].disabled = true;
-      elem[i].disabled = "disabled";
+      elem[i].disabled = 'disabled';
     }
   };
 
   var removeAttributeDisabled = function (elem) { // Удаляет атрибут disabled
-    for(var i = 0; i < elem.length; i++) {
+    for (var i = 0; i < elem.length; i++) {
       elem[i].disabled = false;
-      elem[i].disabled = "";
+      elem[i].disabled = '';
     }
   };
 
@@ -36,13 +33,14 @@
     }
   };
 
-  var startCoords = { // Запомнили стартовые координаты метки
-      x: '570px',
-      y: '375px'
+  // Запомнили стартовые координаты метки
+  var startCoords = {
+    x: '570px',
+    y: '375px'
   };
 
 
-// Деактивируем карту
+  // Деактивируем карту
   window.deactivatesPage = function () {
     form.reset(); // Очищает поля формы после отправки
 
@@ -50,7 +48,8 @@
 
     var mapPins = Array.from(document.querySelectorAll('.map__pin:not(.map__pin--main)'));
 
-    mapPins.forEach(function (it) {  // Удаляет пины после отправки формы
+    // Удаляет пины после отправки формы
+    mapPins.forEach(function (it) {
       mapPinsParent.removeChild(it);
     });
 
@@ -69,26 +68,23 @@
     addsAttributeDisabled(mapFilter);
     addsAttributeDisabled(features);
     adFormHeader.disabled = true; // Деактивирует поле загрузки фотографии
-    adFormHeader.disabled = "disabled";
+    adFormHeader.disabled = 'disabled';
   };
 
   window.deactivatesPage();
 
 
-// Активируем карту
+  // Активируем карту
   var activatesPageHandler = function () { // функция для обработчика событий, активирует карту и формы
 
     map.classList.remove('map--faded'); // Активируем карту
-
     adForm.classList.remove('ad-form--disabled'); // Активируем форму
-
     mapFilters.classList.remove('map__filters--disabled'); // Активируем фильтры
-
     removeAttributeDisabled(adFormFildset); // Удаляет атрибут disablet у полей фильтра
     removeAttributeDisabled(mapFilter);
     removeAttributeDisabled(features);
     adFormHeader.disabled = false;
-    adFormHeader.disabled = "";
+    adFormHeader.disabled = '';
 
     mapPinMain.removeEventListener('mousedown', function () {
       activatesPageHandler();
