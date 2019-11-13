@@ -13,27 +13,6 @@
   var LOCATION_MAX_Y = 630;
   var LOCATION_MIN_Y = 130;
 
-  window.pin = {
-    allPins: []
-  }
-
-  var successHandler = function (data) {
-    window.pin.allPins = data;
-    window.render.render(window.pin.allPins);
-  };
-
-  var errorHandler = function (errorMessage) {
-    var node = document.createElement('div');
-    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
-    node.style.position = 'absolute';
-    node.style.left = 0;
-    node.style.right = 0;
-    node.style.fontSize = '30px';
-
-    node.textContent = errorMessage;
-    document.body.insertAdjacentElement('afterbegin', node);
-  };
-
 
   mapPinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -100,10 +79,5 @@
     document.addEventListener('mousemove', MouseMoveHandler);
     document.addEventListener('mouseup', MouseUpHandler);
   });
-
-  window.slider = {
-    successHandler: successHandler,
-    errorHandler: errorHandler
-  };
 
 })();

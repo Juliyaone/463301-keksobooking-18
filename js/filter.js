@@ -58,7 +58,7 @@
     }).slice(0, 5);
   };
 
-  window.similar = {
+  window.filter = {
     filters: filters
   };
 

@@ -2,8 +2,15 @@
 (function () {
   var map = document.querySelector('.map');
   var referenceElement = document.querySelector('.map__filters-container');
-
+  var pinOfHousing;
+  var HousingType = {
+    FLATE: 'Квартира',
+    PALACE: 'Дворец',
+    HOUSE: 'Дом',
+    BUNGALO: 'Бунгало'
+  };
   var similarCardTemplate = document.querySelector('#card');
+
 
   var cardCloseHandler = function () {
     var popup = map.querySelector('.popup');
@@ -21,13 +28,6 @@
     if (arr.includes(it) !== true) {
       elem.remove(); // Если нет то удаляем li с соответствующим классом из карточки
     }
-  };
-
-  var HousingType = {
-    FLATE: 'Квартира',
-    PALACE: 'Дворец',
-    HOUSE: 'Дом',
-    BUNGALO: 'Бунгало'
   };
 
   var getTypeHouse = function (type, element) {
@@ -94,7 +94,6 @@
         popupPhotos.appendChild(img);
       }
     }
-
     var popupAvatar = cloneElementStyle.querySelector('.popup__avatar'); // аватарка
     popupAvatar.src = card.author.avatar;
 
@@ -114,8 +113,56 @@
     map.insertBefore(childrenFragmentCard, referenceElement);
   };
 
+  var updateCards = function () { // Отрисовывает карточку
+    var sameCard = window.loadingPins.allPins.filter(function (it) {
+      return it.offer.title === pinOfHousing;
+    });
+    window.card.renderCard(sameCard);
+  };
+
+  var closeCard = function () {
+    var mapCard = document.querySelector('.map__card'); // Проверяем есть ли открытая карточка если есть, то удаляем ее
+    if (mapCard) {
+      mapCard.remove();
+    }
+  };
+
+  var addClickListener = function (mapPinButton) {
+    mapPinButton.addEventListener('click', function () {
+      deactivatesPin();
+      mapPinButton.classList.add('map__pin--active');
+      var altPinValue = mapPinButton.querySelector('img').alt;
+      pinOfHousing = altPinValue;
+      window.card.closeCard();
+      window.card.updateCards();
+    });
+  };
+
+  var openCard = function () {
+    var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    for (var i = 0; i < mapPin.length; i++) { // Открываем карточку по клику на пин, без потери окружения
+      var mapPinButton = mapPin[i];
+      addClickListener(mapPinButton); // карточка отрисовалась
+    }
+  };
+
+  var deactivatesPin = function () { // Деактивирует пин при клике на другой пин
+    var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+
+    for (var i = 0; i < mapPin.length; i++) {
+      var mapPinButton = mapPin[i];
+      if (mapPinButton.classList.contains('map__pin--active')) {
+        mapPinButton.classList.remove('map__pin--active');
+      }
+    }
+  };
+
   window.card = {
-    renderCard: renderCard
+    renderCard: renderCard,
+    updateCards: updateCards,
+    closeCard: closeCard,
+    openCard: openCard,
+    deactivatesPin: deactivatesPin
   };
 
 })();

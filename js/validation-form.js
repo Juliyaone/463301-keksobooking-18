@@ -83,21 +83,31 @@
 
   // Синхронизируем изменение комнат и гостей
 
-  var adFormRooms = document.querySelector('#room_number'); // комнат
-  var adFormGuest = document.querySelector('#capacity'); // гостей
+  var adForm = document.querySelector('.ad-form');
+  var rooms = adForm.querySelector('#room_number');
+  var capacity = adForm.querySelector('#capacity');
 
-
-  var roomSync = function (select1, select2) {
-    select2.value = select1.value;
+  var capacityCheck = function () {
+    if (rooms.value === '1' && capacity.value !== '1') {
+      capacity.setCustomValidity('Только для 1 гостя');
+    } else if (rooms.value === '2' && capacity.value !== '1' && capacity.value !== '2') {
+      capacity.setCustomValidity('Только для 1 - 2 гостя');
+    } else if (rooms.value === '3' && capacity.value !== '1' && capacity.value !== '2' && capacity.value !== '3') {
+      capacity.setCustomValidity('Для гостей');
+    } else if (rooms.value === '100' && capacity.value !== '0') {
+      capacity.setCustomValidity('Не для гостей');
+    } else {
+      capacity.setCustomValidity('');
+    }
   };
 
-  adFormRooms.addEventListener('change', function () {
-    roomSync(adFormRooms, adFormGuest);
-  });
+  capacity.addEventListener('input', capacityCheck);
+  rooms.addEventListener('input', capacityCheck);
 
-  adFormGuest.addEventListener('change', function () {
-    roomSync(adFormGuest, adFormRooms);
-  });
+  // Заблокировать поле адрес для ручного редактирования
+
+  document.getElementById('address').setAttribute('readonly', 'readonly');
+
 
   // Сброс полей формы и фильтра с помощью Reset
 
@@ -116,4 +126,5 @@
   };
 
   reset.addEventListener('click', resetPageHandler);
+
 })();
