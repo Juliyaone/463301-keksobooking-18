@@ -4,8 +4,10 @@
 
   var fieldAddress = document.getElementById('address');
   var mapPinMain = document.querySelector('.map__pin--main');
+  var styleLeft = parseInt(mapPinMain.style.left, 10);
+  var styleTop = parseInt(mapPinMain.style.top, 10);
 
-  fieldAddress.value = mapPinMain.style.left + ', ' + mapPinMain.style.top; // находим координаты главной метки в HTML-коде, для НЕактивной страницы, записываем их в поле адрес
+  fieldAddress.value = styleLeft + ', ' + styleTop; // находим координаты главной метки в HTML-коде, для НЕактивной страницы, записываем их в поле адрес
 
   var MAIN_PIN_WIDTH = 62;
   var MAIN_PIN_HEIGHT = 82;
@@ -39,26 +41,29 @@
         y: moveEvt.clientY
       };
 
-      mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
-      mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
+      styleTop = (mapPinMain.offsetTop - shift.y);
+      styleLeft = (mapPinMain.offsetLeft - shift.x);
 
       if (mapPinMain.offsetLeft >= WIDTH_MAP) {
-        mapPinMain.style.left = WIDTH_MAP - MAIN_PIN_WIDTH + 'px';
+        styleLeft = WIDTH_MAP - MAIN_PIN_WIDTH;
       }
 
       if (mapPinMain.offsetLeft < 0) {
-        mapPinMain.style.left = mapPinMain.offsetLeft + (MAIN_PIN_WIDTH / 2) + 'px';
+        styleLeft = mapPinMain.offsetLeft + (MAIN_PIN_WIDTH / 2);
       }
 
       if (mapPinMain.offsetTop > LOCATION_MAX_Y) {
-        mapPinMain.style.top = mapPinMain.offsetTop - MAIN_PIN_HEIGHT + 'px';
+        styleTop = mapPinMain.offsetTop - MAIN_PIN_HEIGHT;
       }
 
       if (mapPinMain.offsetTop < LOCATION_MIN_Y) {
-        mapPinMain.style.top = mapPinMain.offsetTop + MAIN_PIN_HEIGHT + 'px';
+        styleTop = mapPinMain.offsetTop + MAIN_PIN_HEIGHT;
       }
 
-      fieldAddress.value = mapPinMain.style.left + ', ' + mapPinMain.style.top;
+      mapPinMain.style.left = styleLeft + 'px';
+      mapPinMain.style.top = styleTop + 'px';
+
+      fieldAddress.value = parseInt(mapPinMain.style.left, 10) + ', ' + parseInt(mapPinMain.style.top, 10);
     };
 
     var MouseUpHandler = function (upEvt) {

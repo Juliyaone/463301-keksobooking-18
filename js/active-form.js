@@ -56,7 +56,7 @@
     var fieldAddress = document.getElementById('address');
     mapPinMain.style.left = startCoords.x;
     mapPinMain.style.top = startCoords.y;
-    fieldAddress.value = mapPinMain.style.left + ', ' + mapPinMain.style.top; // возвращаем метке ее стартовые координаты
+    fieldAddress.value = mapPinMain.style.left + ', ' + mapPinMain.style.top;
 
     map.classList.add('map--faded'); // Деактивируем карту
 

@@ -2,7 +2,7 @@
 
 window.util = (function () {
   var ESC_KEYCODE = 27;
-  var DEBOUNCE_INTERVAL = 500;
+  var DEBOUNCE_INTERVAL = 100000;
 
   return {
     isEscEvent: function (evt, action) {

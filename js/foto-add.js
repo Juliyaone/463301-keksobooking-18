@@ -33,7 +33,7 @@
   node.width = '40';
   node.height = '45';
   node.style.display = 'flex';
-  node.style.margin = '15px auto';
+  node.style.margin = '10px auto';
 
 
   previewClass.appendChild(node);
