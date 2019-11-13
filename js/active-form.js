@@ -103,11 +103,15 @@
     window.card.closeCard();
   });
 
-  mapFilters.addEventListener('change', function () {
+  var debouncedFilterHandler = window.util.debounce(function () {
     removeElements();
     window.card.closeCard();
     window.render.render(window.filter.filters(window.loadingPins.allPins));
     window.card.openCard();
-    window.card.updateCards(window.loadingPins.allPins);
+  });
+
+  mapFilters.addEventListener('change', function () {
+    removeElements();
+    debouncedFilterHandler();
   });
 })();
