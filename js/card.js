@@ -30,6 +30,7 @@
     }
   };
 
+
   var getTypeHouse = function (type, element) {
     if (type === 'flat') {
       element.textContent = HousingType.FLATE;
@@ -42,6 +43,12 @@
     }
     if (type === 'bungalo') {
       element.textContent = HousingType.BUNGALO;
+    }
+  };
+
+  var checksIfArrayIsEmpty = function (arr, elem) {
+    if (arr.length === 0) {
+      elem.remove();
     }
   };
 
@@ -62,18 +69,22 @@
     cloneElementStyle.querySelector('.popup__text--time').textContent = 'Заезд после ' + card.offer.checkin + ', ' + 'выезд до ' + card.offer.checkout;
 
     var features = card.offer.features; // находим массив с features
+
     var popupFeatureWifi = cloneElementStyle.querySelector('.popup__feature--wifi'); // находим эелементы с нужным классом
     var popupFeatureDishwasher = cloneElementStyle.querySelector('.popup__feature--dishwasher');
     var popupFeatureParking = cloneElementStyle.querySelector('.popup__feature--parking');
     var popupFeatureWasher = cloneElementStyle.querySelector('.popup__feature--washer');
     var popupFeatureElevator = cloneElementStyle.querySelector('.popup__feature--elevator');
     var popupFeatureConditioner = cloneElementStyle.querySelector('.popup__feature--conditioner');
+    var popupFeature = cloneElementStyle.querySelector('.popup__features');
+
     getFeatures(popupFeatureWifi, features, 'wifi');
     getFeatures(popupFeatureDishwasher, features, 'dishwasher');
     getFeatures(popupFeatureParking, features, 'parking');
     getFeatures(popupFeatureElevator, features, 'elevator');
     getFeatures(popupFeatureConditioner, features, 'conditioner');
     getFeatures(popupFeatureWasher, features, 'washer');
+    checksIfArrayIsEmpty(features, popupFeature);
 
     cloneElementStyle.querySelector('.popup__description').textContent = card.offer.description;
 

@@ -11,6 +11,15 @@
   var form = document.querySelector('.ad-form');
   var mapPinsParent = document.querySelector('.map__pins');
   var adFormHeader = adForm.querySelector('.ad-form-header');
+  var MAP_PIN_LEG = 20;
+  var mapOverlay = document.querySelector('.map__overlay');
+  var DEFOLD_COORDINATE_X = mapPinMain.style.left = Math.floor(map.clientWidth / 2 - mapPinMain.offsetWidth / 2) + 'px';
+  var DEFOLD_COORDINATE_Y = mapPinMain.style.top = Math.floor(map.clientHeight / 2 - mapPinMain.offsetHeight / 2) + 'px';
+  var STARTING_COORDINATE_X = mapPinMain.style.left = Math.floor(mapOverlay.clientWidth / 2 - mapPinMain.offsetWidth / 2) + 'px';
+  var STARTING_COORDINATE_Y = mapPinMain.style.top = Math.floor(mapOverlay.clientHeight / 2 - mapPinMain.offsetWidth / 2 - MAP_PIN_LEG) + 'px';
+
+  // Большая метка имеет координаты относительно .map
+  // Маленькая метка относительно .map__overlay
 
   var addsAttributeDisabled = function (elem) { // Добавляет атрибут disabled
     for (var i = 0; i < elem.length; i++) {
@@ -33,12 +42,6 @@
     }
   };
 
-  // Запомнили стартовые координаты метки
-  var startCoords = {
-    x: '570px',
-    y: '375px'
-  };
-
 
   // Деактивируем карту
   window.deactivatesPage = function () {
@@ -54,9 +57,11 @@
     });
 
     var fieldAddress = document.getElementById('address');
-    mapPinMain.style.left = startCoords.x;
-    mapPinMain.style.top = startCoords.y;
-    fieldAddress.value = mapPinMain.style.left + ', ' + mapPinMain.style.top;
+    mapPinMain.style.left = DEFOLD_COORDINATE_X;
+    mapPinMain.style.top = DEFOLD_COORDINATE_Y;
+    var coordLeftDefolt = parseInt(mapPinMain.style.left, 10) + Math.floor(mapPinMain.offsetWidth / 2);
+    var coordTopDefolt = parseInt(mapPinMain.style.top, 10) + Math.floor(mapPinMain.offsetHeight / 2);
+    fieldAddress.value = coordLeftDefolt + ', ' + coordTopDefolt;
 
     map.classList.add('map--faded'); // Деактивируем карту
 
@@ -85,6 +90,15 @@
   var activatesPageHandler = function () { // функция для обработчика событий, активирует карту и формы
 
     map.classList.remove('map--faded'); // Активируем карту
+
+    var fieldAddress = document.getElementById('address');
+    mapPinMain.style.left = window.STARTING_COORDINATE_X;
+    mapPinMain.style.top = window.STARTING_COORDINATE_Y;
+    var coordLeftStarting = parseInt(mapPinMain.style.left, 10) + Math.round(mapPinMain.offsetWidth / 2);
+    var coordTopStarting = parseInt(mapPinMain.style.top, 10) + Math.round((mapPinMain.offsetHeight / 2) + MAP_PIN_LEG);
+
+    fieldAddress.value = coordLeftStarting + ', ' + coordTopStarting;
+
     adForm.classList.remove('ad-form--disabled'); // Активируем форму
     mapFilters.classList.remove('map__filters--disabled'); // Активируем фильтры
     removeAttributeDisabled(adFormFildset); // Удаляет атрибут disablet у полей фильтра
@@ -99,13 +113,8 @@
 
   mapPinMain.addEventListener('mousedown', activatesPageHandler);
 
-  mapFilters.addEventListener('click', function () {
-    window.card.closeCard();
-  });
-
   var debouncedFilterHandler = window.util.debounce(function () {
     removeElements();
-    window.card.closeCard();
     window.render.render(window.filter.filters(window.loadingPins.allPins));
     window.card.openCard();
   });

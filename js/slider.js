@@ -4,17 +4,18 @@
 
   var fieldAddress = document.getElementById('address');
   var mapPinMain = document.querySelector('.map__pin--main');
-  var styleLeft = parseInt(mapPinMain.style.left, 10);
-  var styleTop = parseInt(mapPinMain.style.top, 10);
-
-  fieldAddress.value = styleLeft + ', ' + styleTop; // находим координаты главной метки в HTML-коде, для НЕактивной страницы, записываем их в поле адрес
 
   var MAIN_PIN_WIDTH = 62;
-  var MAIN_PIN_HEIGHT = 82;
-  var WIDTH_MAP = document.querySelector('.map').offsetWidth;
+  var MAIN_PIN_HEIGHT = 84; // Высота метки с ножкой
+  var WIDTH_MAP = document.querySelector('.map__overlay').offsetWidth;
   var LOCATION_MAX_Y = 630;
   var LOCATION_MIN_Y = 130;
+  var MAP_PIN_LEG = 20;
 
+  var mapOverlay = document.querySelector('.map__overlay');
+
+  var styleTop = mapPinMain.style.top = Math.floor(mapOverlay.clientHeight / 2 + mapPinMain.offsetWidth / 2 + MAP_PIN_LEG);
+  var styleLeft = mapPinMain.style.left = Math.floor(mapOverlay.clientWidth / 2 + mapPinMain.offsetWidth / 2);
 
   mapPinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -37,33 +38,35 @@
       };
 
       startCoords = {
-        x: moveEvt.clientX,
+        x: moveEvt.clientX ,
         y: moveEvt.clientY
       };
 
-      styleTop = (mapPinMain.offsetTop - shift.y);
       styleLeft = (mapPinMain.offsetLeft - shift.x);
+      styleTop = (mapPinMain.offsetTop - shift.y);
 
-      if (mapPinMain.offsetLeft >= WIDTH_MAP) {
-        styleLeft = WIDTH_MAP - MAIN_PIN_WIDTH;
+      if (styleLeft >= WIDTH_MAP - (MAIN_PIN_WIDTH/2)) {
+        styleLeft = WIDTH_MAP - MAIN_PIN_WIDTH/2;
       }
 
-      if (mapPinMain.offsetLeft < 0) {
-        styleLeft = mapPinMain.offsetLeft + (MAIN_PIN_WIDTH / 2);
+      if (styleLeft <= 0 - MAIN_PIN_WIDTH/2) {
+        styleLeft = 0 - MAIN_PIN_WIDTH/2;
       }
 
-      if (mapPinMain.offsetTop > LOCATION_MAX_Y) {
-        styleTop = mapPinMain.offsetTop - MAIN_PIN_HEIGHT;
+      if (styleTop >= LOCATION_MAX_Y) {
+        styleTop = LOCATION_MAX_Y;
       }
 
-      if (mapPinMain.offsetTop < LOCATION_MIN_Y) {
-        styleTop = mapPinMain.offsetTop + MAIN_PIN_HEIGHT;
+      if (styleTop <= LOCATION_MIN_Y) {
+        styleTop = LOCATION_MIN_Y;
       }
 
       mapPinMain.style.left = styleLeft + 'px';
       mapPinMain.style.top = styleTop + 'px';
 
-      fieldAddress.value = parseInt(mapPinMain.style.left, 10) + ', ' + parseInt(mapPinMain.style.top, 10);
+      var coordinatesForFormX = parseInt(mapPinMain.style.left, 10) + Math.floor(mapPinMain.offsetWidth / 2);
+      var coordinatesForFormY = parseInt(mapPinMain.style.top, 10) + Math.floor(mapPinMain.offsetHeight + MAP_PIN_LEG);
+      fieldAddress.value = coordinatesForFormX + ', ' + coordinatesForFormY;
     };
 
     var MouseUpHandler = function (upEvt) {

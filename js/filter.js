@@ -50,6 +50,7 @@
 
   var filters = function (data) {
     return data.filter(function (el) {
+          window.card.closeCard();
       return getHousingType(el) &&
              getHousingPrice(el) &&
              getHousingRooms(el) &&
