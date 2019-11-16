@@ -51,9 +51,9 @@
     });
   };
 
-  var filters = function (data) {
+  var filtersPin = function (data) {
     return data.filter(function (el) {
-      window.card.closeCard();
+      window.card.close();
       return getHousingType(el) &&
              getHousingPrice(el) &&
              getHousingRooms(el) &&
@@ -63,7 +63,7 @@
   };
 
   window.filter = {
-    filters: filters
+    pin: filtersPin
   };
 
 })();

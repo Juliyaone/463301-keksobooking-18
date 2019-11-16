@@ -6,8 +6,8 @@
 
   var successLoadHandler = function (data) {
     window.loadingPins.allPins = data;
-    window.render.render(window.loadingPins.allPins);
-    window.card.opensCardByClickingOnPin();
+    window.render.pin(window.loadingPins.allPins);
+    window.card.open();
   };
 
   var errorLoadHandler = function (errorMessage) {
@@ -26,8 +26,8 @@
   };
 
   window.loadingPins = {
-    successLoadHandler: successLoadHandler,
-    errorLoadHandler: errorLoadHandler
+    success: successLoadHandler,
+    error: errorLoadHandler
   };
 
 })();

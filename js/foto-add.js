@@ -3,29 +3,11 @@
 
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
-  var fileChooser = document.querySelector('.ad-form__field input[type=file]');
-  var preview = document.querySelector('.ad-form-header__preview img');
+  var fileChooserAvatar = document.querySelector('.ad-form__field input[type=file]');
+  var previewAvatar = document.querySelector('.ad-form-header__preview img');
 
-  fileChooser.addEventListener('change', function () {
-    var file = fileChooser.files[0];
-    var fileName = file.name.toLowerCase();
-
-    var matches = FILE_TYPES.some(function (it) {
-      return fileName.endsWith(it);
-    });
-
-    if (matches) {
-      var reader = new FileReader();
-
-      reader.addEventListener('load', function () {
-        preview.src = reader.result;
-      });
-
-      reader.readAsDataURL(file);
-    }
-  });
-  var fileChooserFoto = document.querySelector('.ad-form__upload input[type=file]');
-  var previewClass = document.querySelector('.ad-form__photo');
+  var fileChooserFotoHouse = document.querySelector('.ad-form__upload input[type=file]');
+  var previewFotoHouseDefolt = document.querySelector('.ad-form__photo');
 
   var node = document.createElement('img');
   node.src = 'img/muffin-grey.svg';
@@ -35,27 +17,31 @@
   node.style.display = 'flex';
   node.style.margin = '10px auto';
 
+  previewFotoHouseDefolt.appendChild(node);
 
-  previewClass.appendChild(node);
+  var previewFotoHouse = document.querySelector('.ad-form__photo img');
 
-  fileChooserFoto.addEventListener('change', function () {
-    var file = fileChooserFoto.files[0];
-    var fileName = file.name.toLowerCase();
+  var uploadsPhoto = function (fileChooser, preview) {
+    fileChooser.addEventListener('change', function () {
+      var file = fileChooser.files[0];
+      var fileName = file.name.toLowerCase();
 
-    var matches = FILE_TYPES.some(function (it) {
-      return fileName.endsWith(it);
-    });
-
-    if (matches) {
-      var reader = new FileReader();
-
-      reader.addEventListener('load', function () {
-        var previewImg = document.querySelector('.ad-form__photo img');
-
-        previewImg.src = reader.result;
+      var matches = FILE_TYPES.some(function (it) {
+        return fileName.endsWith(it);
       });
 
-      reader.readAsDataURL(file);
-    }
-  });
+      if (matches) {
+        var reader = new FileReader();
+
+        reader.addEventListener('load', function () {
+          preview.src = reader.result;
+        });
+
+        reader.readAsDataURL(file);
+      }
+    });
+  };
+
+  uploadsPhoto(fileChooserFotoHouse, previewFotoHouse);
+  uploadsPhoto(fileChooserAvatar, previewAvatar);
 })();

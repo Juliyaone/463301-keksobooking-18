@@ -158,8 +158,8 @@
   };
 
   window.card = {
-    opensCardByClickingOnPin: opensCardByClickingOnPin,
-    closeCard: closeCard
+    open: opensCardByClickingOnPin,
+    close: closeCard
   };
 
 })();

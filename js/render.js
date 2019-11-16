@@ -7,7 +7,7 @@
   var similarPinTemplate = document.querySelector('#pin');
 
 
-  var renderPin = function (pin) {
+  var createsPin = function (pin) {
     var cloneElement = similarPinTemplate.content.cloneNode(true);
     var cloneElementStyle = cloneElement.querySelector('.map__pin');
     cloneElementStyle.style.left = (pin.location.x - PIN_WIDTH / 2) + 'px';
@@ -21,19 +21,19 @@
   var similarList = document.querySelector('.map__pins');
 
 
-  var render = function (data) {
+  var renderPin = function (data) {
 
     var takeNumber = data.length > PIN_QUANTITY ? PIN_QUANTITY : data.length;
     var fragment = document.createDocumentFragment();
 
     for (var i = 0; i < takeNumber; i++) {
-      fragment.appendChild(renderPin(data[i]));
+      fragment.appendChild(createsPin(data[i]));
     }
     similarList.appendChild(fragment);
     return similarList;
   };
 
   window.render = {
-    render: render
+    pin: renderPin
   };
 })();

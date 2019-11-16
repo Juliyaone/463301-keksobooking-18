@@ -7,7 +7,7 @@
   var adFormfields = adForm.querySelectorAll('.ad-form__element');
   var mapFiltersAll = document.querySelector('.map__filters');
   var mapFilters = mapFiltersAll.querySelectorAll('.map__filter');
-  var features = document.getElementsByName('features');
+  var features = document.querySelectorAll('features');
   var form = document.querySelector('.ad-form');
   var mapPinsParent = document.querySelector('.map__pins');
   var adFormHeader = adForm.querySelector('.ad-form-header');
@@ -39,7 +39,7 @@
   // Деактивируем карту
   window.deactivatesPage = function () {
     form.reset(); // Очищает поля формы
-    window.card.closeCard();
+    window.card.close();
     var mapPins = Array.from(document.querySelectorAll('.map__pin:not(.map__pin--main)'));
 
     // Удаляет пины
@@ -81,7 +81,7 @@
   // Активируем карту
 
   var activatesPage = function () { // функция для обработчика событий, активирует карту и формы
-    window.card.closeCard();
+    window.card.close();
     map.classList.remove('map--faded'); // Активируем карту
 
     var fieldAddress = document.getElementById('address');
@@ -99,7 +99,7 @@
     removeAttributeDisabled(features);
     adFormHeader.disabled = false;
     adFormHeader.disabled = '';
-    window.backend.load(window.loadingPins.successLoadHandler, window.loadingPins.errorLoadHandler);
+    window.backend.load(window.loadingPins.success, window.loadingPins.error);
 
     mapPinMain.removeEventListener('mousedown', mapPinMainClickHandler);
   };
@@ -112,8 +112,8 @@
 
   var filterRemoveDebounceFilterHandler = window.util.debounce(function () {
     removeElements();
-    window.render.render(window.filter.filters(window.loadingPins.allPins));
-    window.card.opensCardByClickingOnPin();
+    window.render.pin(window.filter.pin(window.loadingPins.allPins));
+    window.card.open();
   });
 
   mapFiltersAll.addEventListener('change', function () {
