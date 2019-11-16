@@ -4,17 +4,18 @@
     allPins: []
   };
 
-  var successHandler = function (data) {
+  var successLoadHandler = function (data) {
     window.loadingPins.allPins = data;
     window.render.render(window.loadingPins.allPins);
-    window.card.closeCard();
-    window.card.openCard();
-    window.card.updateCards();
+    window.card.opensCardByClickingOnPin();
   };
 
-  var errorHandler = function (errorMessage) {
+  var errorLoadHandler = function (errorMessage) {
     var node = document.createElement('div');
-    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style = 'z-index: 100';
+    node.style.margin = '0 auto';
+    node.style.textAlign = 'center';
+    node.style. backgroundColor = 'red';
     node.style.position = 'absolute';
     node.style.left = 0;
     node.style.right = 0;
@@ -25,8 +26,8 @@
   };
 
   window.loadingPins = {
-    successHandler: successHandler,
-    errorHandler: errorHandler
+    successLoadHandler: successLoadHandler,
+    errorLoadHandler: errorLoadHandler
   };
 
 })();

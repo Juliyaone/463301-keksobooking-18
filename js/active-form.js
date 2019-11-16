@@ -4,9 +4,9 @@
   var map = document.querySelector('.map');
   var mapPinMain = document.querySelector('.map__pin--main');
   var adForm = document.querySelector('.ad-form');
-  var adFormFildset = adForm.querySelectorAll('.ad-form__element');
-  var mapFilters = document.querySelector('.map__filters');
-  var mapFilter = mapFilters.querySelectorAll('.map__filter');
+  var adFormfields = adForm.querySelectorAll('.ad-form__element');
+  var mapFiltersAll = document.querySelector('.map__filters');
+  var mapFilters = mapFiltersAll.querySelectorAll('.map__filter');
   var features = document.getElementsByName('features');
   var form = document.querySelector('.ad-form');
   var mapPinsParent = document.querySelector('.map__pins');
@@ -35,23 +35,14 @@
     }
   };
 
-  var removeCard = function () { // Удаляет карточку после отправки формы и reset
-    var mapCard = document.querySelector('.map__card');
-    if (mapCard) {
-      mapCard.remove();
-    }
-  };
-
 
   // Деактивируем карту
   window.deactivatesPage = function () {
-    form.reset(); // Очищает поля формы после отправки
-
-    removeCard(); // Удаляет карточку после отправки
-
+    form.reset(); // Очищает поля формы
+    window.card.closeCard();
     var mapPins = Array.from(document.querySelectorAll('.map__pin:not(.map__pin--main)'));
 
-    // Удаляет пины после отправки формы
+    // Удаляет пины
     mapPins.forEach(function (it) {
       mapPinsParent.removeChild(it);
     });
@@ -67,13 +58,14 @@
 
     adForm.classList.add('ad-form--disabled'); // Деактивируем форму
 
-    mapFilters.classList.add('map__filters--disabled'); // Деактивируем фильтры
+    mapFiltersAll.classList.add('map__filters--disabled'); // Деактивируем фильтры
 
-    addsAttributeDisabled(adFormFildset); // Добавляет атрибут disablet полям фильтра
-    addsAttributeDisabled(mapFilter);
+    addsAttributeDisabled(adFormfields); // Добавляет атрибут disablet полям фильтра
+    addsAttributeDisabled(mapFilters);
     addsAttributeDisabled(features);
-    adFormHeader.disabled = true; // Деактивирует поле загрузки фотографии
+    adFormHeader.disabled = true; // Деактивирует поле
     adFormHeader.disabled = 'disabled';
+    mapPinMain.addEventListener('mousedown', mapPinMainClickHandler);
   };
 
   window.deactivatesPage();
@@ -87,40 +79,45 @@
 
 
   // Активируем карту
-  var activatesPageHandler = function () { // функция для обработчика событий, активирует карту и формы
 
+  var activatesPage = function () { // функция для обработчика событий, активирует карту и формы
+    window.card.closeCard();
     map.classList.remove('map--faded'); // Активируем карту
 
     var fieldAddress = document.getElementById('address');
-    mapPinMain.style.left = window.STARTING_COORDINATE_X;
-    mapPinMain.style.top = window.STARTING_COORDINATE_Y;
+    mapPinMain.style.left = STARTING_COORDINATE_X;
+    mapPinMain.style.top = STARTING_COORDINATE_Y;
     var coordLeftStarting = parseInt(mapPinMain.style.left, 10) + Math.round(mapPinMain.offsetWidth / 2);
     var coordTopStarting = parseInt(mapPinMain.style.top, 10) + Math.round((mapPinMain.offsetHeight / 2) + MAP_PIN_LEG);
 
     fieldAddress.value = coordLeftStarting + ', ' + coordTopStarting;
 
     adForm.classList.remove('ad-form--disabled'); // Активируем форму
-    mapFilters.classList.remove('map__filters--disabled'); // Активируем фильтры
-    removeAttributeDisabled(adFormFildset); // Удаляет атрибут disablet у полей фильтра
-    removeAttributeDisabled(mapFilter);
+    mapFiltersAll.classList.remove('map__filters--disabled'); // Активируем фильтры
+    removeAttributeDisabled(adFormfields); // Удаляет атрибут disablet у полей фильтра
+    removeAttributeDisabled(mapFilters);
     removeAttributeDisabled(features);
     adFormHeader.disabled = false;
     adFormHeader.disabled = '';
-    window.backend.load(window.loadingPins.successHandler, window.loadingPins.errorHandler);
+    window.backend.load(window.loadingPins.successLoadHandler, window.loadingPins.errorLoadHandler);
 
-    mapPinMain.removeEventListener('mousedown', activatesPageHandler);
+    mapPinMain.removeEventListener('mousedown', mapPinMainClickHandler);
   };
 
-  mapPinMain.addEventListener('mousedown', activatesPageHandler);
+  var mapPinMainClickHandler = function () {
+    activatesPage();
+  };
 
-  var debouncedFilterHandler = window.util.debounce(function () {
+  mapPinMain.addEventListener('mousedown', mapPinMainClickHandler);
+
+  var filterRemoveDebounceFilterHandler = window.util.debounce(function () {
     removeElements();
     window.render.render(window.filter.filters(window.loadingPins.allPins));
-    window.card.openCard();
+    window.card.opensCardByClickingOnPin();
   });
 
-  mapFilters.addEventListener('change', function () {
+  mapFiltersAll.addEventListener('change', function () {
     removeElements();
-    debouncedFilterHandler();
+    filterRemoveDebounceFilterHandler();
   });
 })();

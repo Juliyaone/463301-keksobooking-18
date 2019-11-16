@@ -34,12 +34,8 @@
   var priceNight = document.getElementById('price');
 
   priceNight.addEventListener('invalid', function () {
-    if (priceNight.validity.patternMismatch) {
-      priceNight.setCustomValidity('Введите число');
-    } else if (priceNight.validity.rangeOverflow) {
+    if (priceNight.validity.rangeOverflow) {
       priceNight.setCustomValidity('Максимальная цена 1000000');
-    } else if (priceNight.validity.valueMissing) {
-      priceNight.setCustomValidity('Обязательное поле');
     } else {
       priceNight.setCustomValidity('');
     }
@@ -93,7 +89,7 @@
     } else if (rooms.value === '2' && capacity.value !== '1' && capacity.value !== '2') {
       capacity.setCustomValidity('Только для 1 - 2 гостя');
     } else if (rooms.value === '3' && capacity.value !== '1' && capacity.value !== '2' && capacity.value !== '3') {
-      capacity.setCustomValidity('Для гостей');
+      capacity.setCustomValidity('«Для 1, 2 или 3 гостей»,');
     } else if (rooms.value === '100' && capacity.value !== '0') {
       capacity.setCustomValidity('Не для гостей');
     } else {
@@ -103,6 +99,7 @@
 
   capacity.addEventListener('input', capacityCheck);
   rooms.addEventListener('input', capacityCheck);
+
 
   // Заблокировать поле адрес для ручного редактирования
 

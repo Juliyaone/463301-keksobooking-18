@@ -14,13 +14,9 @@
     main.appendChild(element);
   };
 
-  var loadHandler = function () {
+  var successSaveHandler = function () {
     window.deactivatesPage();
     createSuccess();
-
-    var popupEscPressHandler = function (evt) { // Обработчик события esc закрывает всплывающее окно success, после отправки формы
-      window.util.isEscEvent(evt, closeSuccessTemplate);
-    };
 
     var success = document.querySelector('.success');
 
@@ -29,14 +25,15 @@
       document.removeEventListener('keydown', popupEscPressHandler);
     };
 
-    success.addEventListener('click', function () { // Обработчик события клик по всплывающему окну success
-      closeSuccessTemplate();
-    });
-
-    document.addEventListener('keydown', function (evt) { // Обработчик события keydown(esc) по всплывающему окну success
+    var popupEscPressHandler = function (evt) { // Обработчик события esc закрывает всплывающее окно success, после отправки формы
       window.util.isEscEvent(evt, closeSuccessTemplate);
-    });
+    };
+
+    success.addEventListener('click', closeSuccessTemplate);
+
+    document.addEventListener('keydown', popupEscPressHandler);
   };
+
 
   var errorTemplate = document
     .querySelector('#error')
@@ -48,30 +45,35 @@
     main.appendChild(element);
   };
 
-  var errorHandler = function () { // При ошибке загрузки данных на сервер, показывает сообщение об ошибке и деактивирует кнопку отправить
+  var errorSaveHandler = function (errorMessage) { // При ошибке загрузки данных на сервер, показывает сообщение об ошибке и деактивирует кнопку отправить
     createError();
-    var popupEscPressHandler = function (evt) { // Обработчик события esc закрывает всплывающее окно error, после отправки формы
+
+    var popupErrorEscPressHandler = function (evt) { // Обработчик события esc закрывает всплывающее окно error, после отправки формы
       window.util.isEscEvent(evt, closeErrorTemplate);
     };
 
     var error = document.querySelector('.error');
+    var errorMessagePopup = error.querySelector('.error__message');
+    errorMessagePopup.textContent = errorMessage;
 
-    var closeErrorTemplate = function () { // функция закрытия всплывающего окна error, после отправки формы
+    var closeErrorTemplate = function () {
       error.classList.add('hidden');
-      document.removeEventListener('keydown', popupEscPressHandler);
+      window.deactivatesPage();
+      document.removeEventListener('keydown', popupErrorEscPressHandler);
     };
 
-    error.addEventListener('click', function () { // Обработчик события клик по всплывающему окну success
-      closeErrorTemplate();
-    });
+    error.addEventListener('click', closeErrorTemplate);
 
-    document.addEventListener('keydown', function (evt) { // Обработчик события keydown(esc) по всплывающему окну success
-      window.util.isEscEvent(evt, closeErrorTemplate);
-    });
+    document.addEventListener('keydown', popupErrorEscPressHandler);
+
+    var errorButton = error.querySelector('.error__button');
+
+    errorButton.addEventListener('click', closeErrorTemplate);
   };
 
+
   form.addEventListener('submit', function (evt) { // Обработчик клика на кнопку отправить
-    window.backend.save(new FormData(form), loadHandler, errorHandler); // Вызов функции отправки данных формы на сервер
+    window.backend.save(new FormData(form), successSaveHandler, errorSaveHandler); // Вызов функции отправки данных формы на сервер
     evt.preventDefault();
   });
 

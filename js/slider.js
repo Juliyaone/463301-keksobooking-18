@@ -4,15 +4,13 @@
 
   var fieldAddress = document.getElementById('address');
   var mapPinMain = document.querySelector('.map__pin--main');
+  var mapOverlay = document.querySelector('.map__overlay');
 
   var MAIN_PIN_WIDTH = 62;
-  var MAIN_PIN_HEIGHT = 84; // Высота метки с ножкой
   var WIDTH_MAP = document.querySelector('.map__overlay').offsetWidth;
   var LOCATION_MAX_Y = 630;
   var LOCATION_MIN_Y = 130;
   var MAP_PIN_LEG = 20;
-
-  var mapOverlay = document.querySelector('.map__overlay');
 
   var styleTop = mapPinMain.style.top = Math.floor(mapOverlay.clientHeight / 2 + mapPinMain.offsetWidth / 2 + MAP_PIN_LEG);
   var styleLeft = mapPinMain.style.left = Math.floor(mapOverlay.clientWidth / 2 + mapPinMain.offsetWidth / 2);
@@ -27,7 +25,7 @@
 
     var dragged = false;
 
-    var MouseMoveHandler = function (moveEvt) {
+    var mouseMoveHandler = function (moveEvt) {
       moveEvt.preventDefault();
       dragged = true;
 
@@ -38,19 +36,19 @@
       };
 
       startCoords = {
-        x: moveEvt.clientX ,
+        x: moveEvt.clientX,
         y: moveEvt.clientY
       };
 
       styleLeft = (mapPinMain.offsetLeft - shift.x);
       styleTop = (mapPinMain.offsetTop - shift.y);
 
-      if (styleLeft >= WIDTH_MAP - (MAIN_PIN_WIDTH/2)) {
-        styleLeft = WIDTH_MAP - MAIN_PIN_WIDTH/2;
+      if (styleLeft >= WIDTH_MAP - (MAIN_PIN_WIDTH / 2)) {
+        styleLeft = WIDTH_MAP - MAIN_PIN_WIDTH / 2;
       }
 
-      if (styleLeft <= 0 - MAIN_PIN_WIDTH/2) {
-        styleLeft = 0 - MAIN_PIN_WIDTH/2;
+      if (styleLeft <= 0 - MAIN_PIN_WIDTH / 2) {
+        styleLeft = 0 - MAIN_PIN_WIDTH / 2;
       }
 
       if (styleTop >= LOCATION_MAX_Y) {
@@ -69,11 +67,11 @@
       fieldAddress.value = coordinatesForFormX + ', ' + coordinatesForFormY;
     };
 
-    var MouseUpHandler = function (upEvt) {
+    var mouseUpHandler = function (upEvt) {
       upEvt.preventDefault();
 
-      document.removeEventListener('mousemove', MouseMoveHandler);
-      document.removeEventListener('mouseup', MouseUpHandler);
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', mouseUpHandler);
 
       if (dragged) {
         var preventDefaultClickHandler = function () {
@@ -84,8 +82,8 @@
       }
     };
 
-    document.addEventListener('mousemove', MouseMoveHandler);
-    document.addEventListener('mouseup', MouseUpHandler);
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
   });
 
 })();
