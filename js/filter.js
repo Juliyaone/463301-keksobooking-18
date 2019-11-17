@@ -1,12 +1,6 @@
 'use strict';
 (function () {
-
-  var mapFilters = document.querySelector('.map__filters');
-  var mapFeatures = mapFilters.querySelectorAll('#housing-features input');
-  var housingType = mapFilters.querySelector('#housing-type');
-  var housingPrice = mapFilters.querySelector('#housing-price');
-  var housingRooms = mapFilters.querySelector('#housing-rooms');
-  var housingGuests = mapFilters.querySelector('#housing-guests');
+  var QUANTITY_PIN = 5;
 
   var PriceMap = {
     LOW: 'low',
@@ -16,8 +10,12 @@
     MAXPRICE: 50000
   };
 
-  var QUANTITY_PIN = 5;
-
+  var mapFilters = document.querySelector('.map__filters');
+  var mapFeatures = mapFilters.querySelectorAll('#housing-features input');
+  var housingType = mapFilters.querySelector('#housing-type');
+  var housingPrice = mapFilters.querySelector('#housing-price');
+  var housingRooms = mapFilters.querySelector('#housing-rooms');
+  var housingGuests = mapFilters.querySelector('#housing-guests');
 
   var getHousingType = function (el) {
     return housingType.value === 'any' ? true : el.offer.type === housingType.value;

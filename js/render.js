@@ -5,6 +5,7 @@
   var PIN_WIDTH = 40;
   var PIN_HEIGHT = 40;
   var similarPinTemplate = document.querySelector('#pin');
+  var similarList = document.querySelector('.map__pins');
 
 
   var createsPin = function (pin) {
@@ -18,14 +19,9 @@
     return cloneElement;
   };
 
-  var similarList = document.querySelector('.map__pins');
-
-
   var renderPin = function (data) {
-
     var takeNumber = data.length > PIN_QUANTITY ? PIN_QUANTITY : data.length;
     var fragment = document.createDocumentFragment();
-
     for (var i = 0; i < takeNumber; i++) {
       fragment.appendChild(createsPin(data[i]));
     }

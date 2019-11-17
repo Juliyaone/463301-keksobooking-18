@@ -1,15 +1,17 @@
 'use strict';
 (function () {
-  var map = document.querySelector('.map');
-  var referenceElement = document.querySelector('.map__filters-container');
-  var pinOfHousing;
+  var QUANTITY_PIN = 5;
+
   var HousingType = {
     FLATE: 'Квартира',
     PALACE: 'Дворец',
     HOUSE: 'Дом',
     BUNGALO: 'Бунгало'
   };
-  var QUANTITY_PIN = 5;
+
+  var pinOfHousing;
+  var map = document.querySelector('.map');
+  var referenceElement = document.querySelector('.map__filters-container');
   var similarCardTemplate = document.querySelector('#card');
 
   var cardEscPressHandler = function (evt) {
@@ -26,7 +28,6 @@
       elem.remove(); // Если нет то удаляем li с соответствующим классом из карточки
     }
   };
-
 
   var getTypeHouse = function (type, element) {
     if (type === 'flat') {
@@ -159,7 +160,8 @@
 
   window.card = {
     open: opensCardByClickingOnPin,
-    close: closeCard
+    close: closeCard,
+    removeClassActivePins: removeClassActivePins
   };
 
 })();

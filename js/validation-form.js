@@ -119,7 +119,7 @@
     housingPrice.value = 'any';
     housingRooms.value = 'any';
     housingGuests.value = 'any';
-    window.deactivatesPage();
+    window.inactivePage.deactivatesPage();
   };
 
   reset.addEventListener('click', resetPageHandler);

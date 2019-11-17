@@ -15,7 +15,7 @@
   };
 
   var successSaveHandler = function () {
-    window.deactivatesPage();
+    window.inactivePage.deactivatesPage();
     createSuccess();
 
     var success = document.querySelector('.success');
@@ -58,7 +58,7 @@
 
     var closeErrorTemplate = function () {
       error.classList.add('hidden');
-      window.deactivatesPage();
+      window.inactivePage.deactivatesPage();
       document.removeEventListener('keydown', popupErrorEscPressHandler);
     };
 
@@ -78,7 +78,7 @@
   });
 
   form.addEventListener('reset', function () { // Обработчик клика на кнопку очистить
-    window.deactivatesPage();
+    window.inactivePage.deactivatesPage();
   });
 
 })();

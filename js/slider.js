@@ -1,19 +1,17 @@
 'use strict';
 (function () {
-  // Реализуем перетаскивание
-
-  var fieldAddress = document.getElementById('address');
-  var mapPinMain = document.querySelector('.map__pin--main');
-  var mapOverlay = document.querySelector('.map__overlay');
-
   var MAIN_PIN_WIDTH = 62;
-  var WIDTH_MAP = document.querySelector('.map__overlay').offsetWidth;
   var LOCATION_MAX_Y = 630;
   var LOCATION_MIN_Y = 130;
   var MAP_PIN_LEG = 20;
 
-  var styleTop = mapPinMain.style.top = Math.floor(mapOverlay.clientHeight / 2 + mapPinMain.offsetWidth / 2 + MAP_PIN_LEG);
-  var styleLeft = mapPinMain.style.left = Math.floor(mapOverlay.clientWidth / 2 + mapPinMain.offsetWidth / 2);
+  var fieldAddress = document.getElementById('address');
+  var mapPinMain = document.querySelector('.map__pin--main');
+  var mapOverlay = document.querySelector('.map__overlay');
+  var widthMap = mapOverlay.clientWidth;
+
+  var styleLeft = parseInt(window.activePage.srartingCoordinateX, 10);
+  var styleTop = parseInt(window.activePage.srartingCoordinateY, 10);
 
   mapPinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -43,8 +41,8 @@
       styleLeft = (mapPinMain.offsetLeft - shift.x);
       styleTop = (mapPinMain.offsetTop - shift.y);
 
-      if (styleLeft >= WIDTH_MAP - (MAIN_PIN_WIDTH / 2)) {
-        styleLeft = WIDTH_MAP - MAIN_PIN_WIDTH / 2;
+      if (styleLeft >= widthMap - (MAIN_PIN_WIDTH / 2)) {
+        styleLeft = widthMap - MAIN_PIN_WIDTH / 2;
       }
 
       if (styleLeft <= 0 - MAIN_PIN_WIDTH / 2) {
