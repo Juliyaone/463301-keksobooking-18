@@ -17,6 +17,7 @@
   var housingRooms = mapFilters.querySelector('#housing-rooms');
   var housingGuests = mapFilters.querySelector('#housing-guests');
 
+
   var getHousingType = function (el) {
     return housingType.value === 'any' ? true : el.offer.type === housingType.value;
   };

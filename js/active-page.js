@@ -6,9 +6,9 @@
   var mapPinMain = document.querySelector('.map__pin--main');
   var adForm = document.querySelector('.ad-form');
   var adFormfields = adForm.querySelectorAll('.ad-form__element');
-  var mapFiltersAll = document.querySelector('.map__filters');
-  var mapFilters = mapFiltersAll.querySelectorAll('.map__filter');
-  var features = document.querySelectorAll('features');
+  var filterСontainer = document.querySelector('.map__filters');
+  var mapFilters = filterСontainer.querySelectorAll('.map__filter');
+  var featuresСontainer = document.querySelector('.map__features');
   var adFormHeader = adForm.querySelector('.ad-form-header');
   var mapOverlay = document.querySelector('.map__overlay');
   var fieldAddress = document.getElementById('address');
@@ -39,12 +39,17 @@
     fieldAddress.value = coordLeftStarting + ', ' + coordTopStarting;
 
     adForm.classList.remove('ad-form--disabled'); // Активируем форму
-    mapFiltersAll.classList.remove('map__filters--disabled'); // Активируем фильтры
-    removeAttributeDisabled(adFormfields); // Удаляет атрибут disablet у полей фильтра
-    removeAttributeDisabled(mapFilters);
-    removeAttributeDisabled(features);
-    adFormHeader.disabled = false;
+    removeAttributeDisabled(adFormfields); // Удаляет атрибут disablet у полей формы
+
+    filterСontainer.classList.remove('map__filters--disabled'); // Активируем все фильтры
+    removeAttributeDisabled(mapFilters); // Активируем фильтры по отдельности
+
+    featuresСontainer.disabled = false; // Aктивируем все features
+    featuresСontainer.disabled = '';
+
+    adFormHeader.disabled = false; // Aктивируем поле с фото
     adFormHeader.disabled = '';
+
     window.backend.load(window.loadingPins.success, window.loadingPins.error);
 
     mapPinMain.removeEventListener('mousedown', mapPinMainClickHandler);
@@ -62,7 +67,7 @@
     window.card.open();
   });
 
-  mapFiltersAll.addEventListener('change', function () {
+  filterСontainer.addEventListener('change', function () {
     window.inactivePage.removePin();
     filterRemoveDebounceFilterHandler();
   });

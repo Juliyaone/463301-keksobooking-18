@@ -9,15 +9,10 @@
     window.card.open();
   };
 
-
-  var errorLoadHandler = function (errorMessage) {
-    window.inactivePage.deactivatesPage(); // Деактивируем страницу
-    mapPinMain.disabled = true;
-    mapPinMain.disabled = 'disabled'; // Блокируем кнопку
-
+  var createErrorPopup = function (errorMessage) {
     var div = document.createElement('div');
     div.className = 'error__load';
-    div.style = 'z-index: 100';
+    div.style.zIndex = '100';
     div.style.backgroundColor = 'red';
     div.style.position = 'absolute';
     div.style.left = 0;
@@ -32,11 +27,19 @@
     string.style.margin = '10px auto';
     string.style.width = '100%';
 
-    var text = document.createTextNode(errorMessage);
-
-    string.appendChild(text);
     div.appendChild(string);
+
     document.body.insertAdjacentElement('afterbegin', div);
+
+    var text = document.createTextNode(errorMessage);
+    string.appendChild(text);
+  };
+
+  var errorLoadHandler = function (errorMessage) {
+    window.inactivePage.deactivatesPage(); // Деактивируем страницу
+    mapPinMain.disabled = true;
+    mapPinMain.disabled = 'disabled'; // Блокируем кнопку
+    createErrorPopup(errorMessage);
   };
 
   window.loadingPins = {

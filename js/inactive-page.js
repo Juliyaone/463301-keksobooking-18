@@ -3,11 +3,11 @@
   var adForm = document.querySelector('.ad-form');
   var adFormHeader = adForm.querySelector('.ad-form-header');
   var mapPinMain = document.querySelector('.map__pin--main');
-  var mapFiltersAll = document.querySelector('.map__filters');
+  var filterСontainer = document.querySelector('.map__filters');
+  var mapFilters = filterСontainer.querySelectorAll('.map__filter');
   var map = document.querySelector('.map');
   var adFormfields = adForm.querySelectorAll('.ad-form__element');
-  var mapFilters = mapFiltersAll.querySelectorAll('.map__filter');
-  var features = document.querySelectorAll('features');
+  var featuresСontainer = document.querySelector('.map__features');
   var fieldAddress = document.getElementById('address');
 
   mapPinMain.style.left = Math.floor(map.clientWidth / 2 - mapPinMain.offsetWidth / 2) + 'px';
@@ -43,14 +43,17 @@
     map.classList.add('map--faded'); // Деактивируем карту
 
     adForm.classList.add('ad-form--disabled'); // Деактивируем форму
+    addsAttributeDisabled(adFormfields); // Добавляет атрибут disablet полям формы
 
-    mapFiltersAll.classList.add('map__filters--disabled'); // Деактивируем фильтры
+    filterСontainer.classList.add('map__filters--disabled'); // Деактивируем все фильтры
+    addsAttributeDisabled(mapFilters); // Деактивируем фильтры по отдельности
 
-    addsAttributeDisabled(adFormfields); // Добавляет атрибут disablet полям фильтра
-    addsAttributeDisabled(mapFilters);
-    addsAttributeDisabled(features);
-    adFormHeader.disabled = true; // Деактивирует поле
+    featuresСontainer.disabled = true; // Деактивируем все features
+    featuresСontainer.disabled = 'disabled';
+
+    adFormHeader.disabled = true; // Деактивирует поле c фото
     adFormHeader.disabled = 'disabled';
+
     mapPinMain.addEventListener('mousedown', window.activePage.mapPinMainClickHandler);
   };
 
