@@ -43,9 +43,7 @@
   };
 
   var nodNetworkHandler = function (errorMessage) {
-    window.inactivePage.deactivatesFilters();
-    mapFiltersContainer.classList.add('hidden');
-    createErrorPopup(errorMessage);
+    errorLoadHandler(errorMessage);
   };
 
 
