@@ -44,10 +44,6 @@
 
   var nodNetworkHandler = function (errorMessage) {
     window.inactivePage.deactivatesFilters();
-    window.inactivePage.deactivatesForm();
-    window.inactivePage.deactivatesPage();
-    mapPinMain.disabled = true;
-    mapPinMain.disabled = 'disabled';
     mapFiltersContainer.classList.add('hidden');
     createErrorPopup(errorMessage);
   };

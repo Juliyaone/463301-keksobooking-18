@@ -127,23 +127,19 @@
     renderCard(sameCard);
   };
 
-  var removeClassActivePins = function () { // Удаляет активный класс у пинов
-    var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-    mapPins.forEach(function (pin) {
-      pin.classList.remove('map__pin--active');
-    });
-  };
-
   var closeCard = function () {
-    var mapCard = document.querySelector('.map__card'); // Проверяем есть ли открытая карточка если есть, то удаляем ее
+    var mapPinActive = document.querySelector('.map__pin--active');
+    if (mapPinActive) {
+      mapPinActive.classList.remove('map__pin--active');
+    }
+    var mapCard = document.querySelector('.map__card');
     if (mapCard) {
       mapCard.remove();
     }
-    removeClassActivePins();
     document.removeEventListener('keydown', cardEscPressHandler);
   };
 
-  var opensCardByClickingOnPin = function () { // Перебирает пины присваивает им активный класс и по клику открывает карточку
+  var opensCardByClickingOnPin = function () {
     var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
 
     mapPins.forEach(function (pin) {
@@ -160,7 +156,6 @@
   window.card = {
     open: opensCardByClickingOnPin,
     close: closeCard,
-    removeClassActivePins: removeClassActivePins
   };
 
 })();
