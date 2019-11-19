@@ -1,11 +1,12 @@
 'use strict';
 (function () {
   var mapPinMain = document.querySelector('.map__pin--main');
-
+  var mapFiltersContainer = document.querySelector('.map__filters-container');
 
   var successLoadHandler = function (data) {
     window.loadingPins.allPins = data;
     window.render.pin(window.loadingPins.allPins);
+    window.activePage.activatesFilter();
     window.card.open();
   };
 
@@ -36,15 +37,26 @@
   };
 
   var errorLoadHandler = function (errorMessage) {
-    window.inactivePage.deactivatesPage(); // Деактивируем страницу
-    mapPinMain.disabled = true;
-    mapPinMain.disabled = 'disabled'; // Блокируем кнопку
+    window.inactivePage.deactivatesFilters();
+    mapFiltersContainer.classList.add('hidden');
     createErrorPopup(errorMessage);
   };
+
+  var nodNetworkHandler = function (errorMessage) {
+    window.inactivePage.deactivatesFilters();
+    window.inactivePage.deactivatesForm();
+    window.inactivePage.deactivatesPage();
+    mapPinMain.disabled = true;
+    mapPinMain.disabled = 'disabled';
+    mapFiltersContainer.classList.add('hidden');
+    createErrorPopup(errorMessage);
+  };
+
 
   window.loadingPins = {
     success: successLoadHandler,
     error: errorLoadHandler,
+    nodNetwork: nodNetworkHandler,
     allPins: []
   };
 

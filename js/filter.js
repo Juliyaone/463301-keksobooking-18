@@ -64,5 +64,4 @@
   window.filter = {
     pin: filtersPin
   };
-
 })();

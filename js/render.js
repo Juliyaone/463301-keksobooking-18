@@ -7,6 +7,11 @@
   var similarPinTemplate = document.querySelector('#pin');
   var similarList = document.querySelector('.map__pins');
 
+  var checksIfArrayIsEmpty = function (arr, elem) {
+    if (arr.length === 0) {
+      elem.remove();
+    }
+  };
 
   var createsPin = function (pin) {
     var cloneElement = similarPinTemplate.content.cloneNode(true);
@@ -16,6 +21,8 @@
     cloneElementStyle.querySelector('img').src = pin.author.avatar;
     cloneElementStyle.querySelector('img').alt = pin.offer.title;
     cloneElementStyle.type = pin.offer.type;
+    var pinOffer = pin.offer; // находим массив с offer
+    checksIfArrayIsEmpty(pinOffer, cloneElementStyle); // если массив с offer пустой, то весь пин
     return cloneElement;
   };
 

@@ -9,7 +9,7 @@
 
   window.backend = {};
 
-  var getData = function (onLoad, onError) {
+  var getData = function (onLoad, onError, onNodNetwork) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.timeout = TIMEOUT;
@@ -23,7 +23,7 @@
     });
 
     xhr.addEventListener('error', function () {
-      onError('Произошла ошибка соединения');
+      onNodNetwork('Произошла ошибка соединения');
     });
 
     xhr.addEventListener('timeout', function () {
@@ -33,14 +33,14 @@
     return xhr;
   };
 
-  window.backend.load = function (onLoad, onError) {
-    var xhr = getData(onLoad, onError);
+  window.backend.load = function (onLoad, onError, onNodNetwork) {
+    var xhr = getData(onLoad, onError, onNodNetwork);
     xhr.open('GET', DATA_URL);
     xhr.send();
   };
 
-  window.backend.save = function (data, onLoad, onError) {
-    var xhr = getData(onLoad, onError);
+  window.backend.save = function (data, onLoad, onError, onNodNetwork) {
+    var xhr = getData(onLoad, onError, onNodNetwork);
     xhr.open('POST', SEND_URL);
     xhr.send(data);
   };

@@ -9,23 +9,29 @@
     .content
     .querySelector('div');
 
-  var createSuccess = function () { // Создает копию темплейт и аппендит в дом в main
+  var createSuccess = function () {
     var element = successTemplate.cloneNode(true);
     main.appendChild(element);
   };
 
   var successSaveHandler = function () {
+    var errorLoad = document.querySelector('.error__load');
+    if (errorLoad) {
+      errorLoad.classList.add('hidden');
+    }
     window.inactivePage.deactivatesPage();
+    window.inactivePage.deactivatesFilters();
+    window.inactivePage.deactivatesForm();
     createSuccess();
 
     var success = document.querySelector('.success');
 
-    var closeSuccessTemplate = function () { // функция закрытия всплывающего окна success, после отправки формы
+    var closeSuccessTemplate = function () {
       success.classList.add('hidden');
       document.removeEventListener('keydown', popupEscPressHandler);
     };
 
-    var popupEscPressHandler = function (evt) { // Обработчик события esc закрывает всплывающее окно success, после отправки формы
+    var popupEscPressHandler = function (evt) {
       window.util.isEscEvent(evt, closeSuccessTemplate);
     };
 
@@ -34,51 +40,62 @@
     document.addEventListener('keydown', popupEscPressHandler);
   };
 
-
   var errorTemplate = document
     .querySelector('#error')
     .content
     .querySelector('div');
 
-  var createError = function () { // Создает копию темплейт и аппендит в дом в main
+  var createError = function () {
     var element = errorTemplate.cloneNode(true);
     main.appendChild(element);
   };
 
-  var errorSaveHandler = function (errorMessage) { // При ошибке загрузки данных на сервер, показывает сообщение об ошибке и деактивирует кнопку отправить
-    createError();
+  var errorSaveHandler = function (errorMessage) {
+    var errorLoad = document.querySelector('.error__load');
 
-    var popupErrorEscPressHandler = function (evt) { // Обработчик события esc закрывает всплывающее окно error, после отправки формы
-      window.util.isEscEvent(evt, closeErrorTemplate);
+    if (errorLoad) {
+      errorLoad.classList.add('hidden');
+    }
+    createError();
+    window.inactivePage.deactivatesPage();
+    window.inactivePage.deactivatesFilters();
+    window.inactivePage.deactivatesForm();
+
+    var popupErrorEscPressHandler = function (evt) {
+      window.util.isEscEvent(evt, closesErrorTemplate);
     };
 
     var error = document.querySelector('.error');
     var errorMessagePopup = error.querySelector('.error__message');
     errorMessagePopup.textContent = errorMessage;
 
-    var closeErrorTemplate = function () {
+    var closesErrorTemplate = function () {
       error.classList.add('hidden');
-      window.inactivePage.deactivatesPage();
       document.removeEventListener('keydown', popupErrorEscPressHandler);
     };
 
-    error.addEventListener('click', closeErrorTemplate);
+    error.addEventListener('click', closesErrorTemplate);
 
     document.addEventListener('keydown', popupErrorEscPressHandler);
 
     var errorButton = error.querySelector('.error__button');
 
-    errorButton.addEventListener('click', closeErrorTemplate);
+    errorButton.addEventListener('click', closesErrorTemplate);
   };
 
+  var nodNetworkHandler = function (errorMessage) {
+    errorSaveHandler(errorMessage);
+  };
 
-  form.addEventListener('submit', function (evt) { // Обработчик клика на кнопку отправить
-    window.backend.save(new FormData(form), successSaveHandler, errorSaveHandler); // Вызов функции отправки данных формы на сервер
+  form.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(form), successSaveHandler, errorSaveHandler, nodNetworkHandler);
     evt.preventDefault();
   });
 
-  form.addEventListener('reset', function () { // Обработчик клика на кнопку очистить
+  form.addEventListener('reset', function () {
     window.inactivePage.deactivatesPage();
+    window.inactivePage.deactivatesFilters();
+    window.inactivePage.deactivatesForm();
   });
 
 })();

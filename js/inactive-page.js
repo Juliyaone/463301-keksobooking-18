@@ -30,29 +30,42 @@
     });
   };
 
-  var deactivatesPage = function () {
-    adForm.reset(); // Очищает поля формы
-    window.card.close();
-    removePin();
-    mapPinMain.style.left = defoldCoordinateX;
-    mapPinMain.style.top = defoldCoordinateY;
-    var coordLeftDefolt = parseInt(mapPinMain.style.left, 10) + Math.floor(mapPinMain.offsetWidth / 2);
-    var coordTopDefolt = parseInt(mapPinMain.style.top, 10) + Math.floor(mapPinMain.offsetHeight / 2);
-    fieldAddress.value = coordLeftDefolt + ', ' + coordTopDefolt;
-
-    map.classList.add('map--faded'); // Деактивируем карту
-
-    adForm.classList.add('ad-form--disabled'); // Деактивируем форму
-    addsAttributeDisabled(adFormfields); // Добавляет атрибут disablet полям формы
-
+  var deactivatesFilters = function () {
     filterСontainer.classList.add('map__filters--disabled'); // Деактивируем все фильтры
     addsAttributeDisabled(mapFilters); // Деактивируем фильтры по отдельности
 
     featuresСontainer.disabled = true; // Деактивируем все features
     featuresСontainer.disabled = 'disabled';
+  };
+
+  deactivatesFilters();
+
+  var deactivatesForm = function () {
+    adForm.classList.add('ad-form--disabled'); // Деактивируем форму
+    addsAttributeDisabled(adFormfields); // Добавляет атрибут disablet полям формы
 
     adFormHeader.disabled = true; // Деактивирует поле c фото
     adFormHeader.disabled = 'disabled';
+  };
+
+  deactivatesForm();
+
+  var getCoordinatsDefold = function () {
+    mapPinMain.style.left = defoldCoordinateX;
+    mapPinMain.style.top = defoldCoordinateY;
+
+    var coordLeftDefolt = parseInt(mapPinMain.style.left, 10) + Math.round(mapPinMain.offsetWidth / 2);
+    var coordTopDefolt = parseInt(mapPinMain.style.top, 10) + Math.round(mapPinMain.offsetHeight / 2);
+    fieldAddress.value = coordLeftDefolt + ', ' + coordTopDefolt;
+  };
+
+
+  var deactivatesPage = function () {
+    adForm.reset(); // Очищает поля формы
+    window.card.close();
+    removePin();
+    map.classList.add('map--faded'); // Деактивируем карту
+    getCoordinatsDefold();
 
     mapPinMain.addEventListener('mousedown', window.activePage.mapPinMainClickHandler);
   };
@@ -62,6 +75,8 @@
   window.inactivePage = {
     deactivatesPage: deactivatesPage,
     removePin: removePin,
+    deactivatesFilters: deactivatesFilters,
+    deactivatesForm: deactivatesForm
   };
 
 })();

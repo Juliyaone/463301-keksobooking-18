@@ -27,55 +27,60 @@
     }
   };
 
-  var activatesPage = function () { // функция для обработчика событий, активирует карту и формы
-    window.card.close();
-    map.classList.remove('map--faded'); // Активируем карту
-    mapPinMain.style.left = srartingCoordinateX;
-    mapPinMain.style.top = srartingCoordinateY;
-
-    var coordLeftStarting = parseInt(mapPinMain.style.left, 10) + Math.round(mapPinMain.offsetWidth / 2);
-    var coordTopStarting = parseInt(mapPinMain.style.top, 10) + Math.round(mapPinMain.offsetHeight + MAP_PIN_LEG);
-
-    fieldAddress.value = coordLeftStarting + ', ' + coordTopStarting;
-
-    adForm.classList.remove('ad-form--disabled'); // Активируем форму
-    removeAttributeDisabled(adFormfields); // Удаляет атрибут disablet у полей формы
-
+  var activatesFilter = function () {
     filterСontainer.classList.remove('map__filters--disabled'); // Активируем все фильтры
     removeAttributeDisabled(mapFilters); // Активируем фильтры по отдельности
-
     featuresСontainer.disabled = false; // Aктивируем все features
     featuresСontainer.disabled = '';
+  };
 
+  var activatesForm = function () {
+    adForm.classList.remove('ad-form--disabled'); // Активируем форму
+    removeAttributeDisabled(adFormfields); // Удаляет атрибут disablet у полей формы
     adFormHeader.disabled = false; // Aктивируем поле с фото
     adFormHeader.disabled = '';
+  };
 
-    window.backend.load(window.loadingPins.success, window.loadingPins.error);
+  var getCoordinats = function () {
+    mapPinMain.style.left = srartingCoordinateX;
+    mapPinMain.style.top = srartingCoordinateY;
+    var coordLeftStarting = parseInt(mapPinMain.style.left, 10) + Math.round(mapPinMain.offsetWidth / 2);
+    var coordTopStarting = parseInt(mapPinMain.style.top, 10) + Math.round(mapPinMain.offsetHeight + MAP_PIN_LEG);
+    fieldAddress.value = coordLeftStarting + ', ' + coordTopStarting;
+  };
 
+  var activatesPage = function () {
+    window.validationForm.resetClickHandler();
+    window.card.close();
+    map.classList.remove('map--faded');
+    window.backend.load(window.loadingPins.success, window.loadingPins.error, window.loadingPins.nodNetwork);
     mapPinMain.removeEventListener('mousedown', mapPinMainClickHandler);
+    getCoordinats();
   };
 
   var mapPinMainClickHandler = function () {
     activatesPage();
+    activatesForm();
   };
 
   mapPinMain.addEventListener('mousedown', mapPinMainClickHandler);
 
-  var filterRemoveDebounceFilterHandler = window.util.debounce(function () {
+  var filterChangeHandler = window.util.debounce(function () {
     window.inactivePage.removePin();
     window.render.pin(window.filter.pin(window.loadingPins.allPins));
     window.card.open();
   });
 
   filterСontainer.addEventListener('change', function () {
-    window.inactivePage.removePin();
-    filterRemoveDebounceFilterHandler();
+    filterChangeHandler();
   });
 
   window.activePage = {
     srartingCoordinateX: srartingCoordinateX,
     srartingCoordinateY: srartingCoordinateY,
-    mapPinMainClickHandler: mapPinMainClickHandler
+    mapPinMainClickHandler: mapPinMainClickHandler,
+    activatesFilter: activatesFilter,
+    activatesForm: activatesForm,
+    activatesPage: activatesPage
   };
-
 })();

@@ -18,10 +18,6 @@
     window.util.isEscEvent(evt, closeCard);
   };
 
-  var cardCloseHandler = function () {
-    closeCard();
-    document.removeEventListener('keydown', cardEscPressHandler);
-  };
 
   var getFeatures = function (elem, arr, it) { // Проверяем есть ли в массиве нужный елемент features
     if (arr.includes(it) !== true) {
@@ -89,6 +85,8 @@
     var popupPhotos = cloneElementStyle.querySelector('.popup__photos');
     var popupPhotosImg = popupPhotos.querySelector('img');
     var arrPhotos = card.offer.photos;
+    checksIfArrayIsEmpty(arrPhotos, popupPhotos);
+
     if (arrPhotos.length === 0) { // Если массив картинок пустой, то скрываем блок с картинками в карточке
       popupPhotosImg.classList.add('hidden');
     } else {
@@ -107,7 +105,7 @@
     popupAvatar.src = card.author.avatar;
 
     var popupClose = cloneElementStyle.querySelector('.popup__close'); // Обработчик закрытия карточки
-    popupClose.addEventListener('click', cardCloseHandler); // Обработчик закрытия карточки
+    popupClose.addEventListener('click', closeCard); // Обработчик закрытия карточки
     document.addEventListener('keydown', cardEscPressHandler);
     return cloneElementStyle;
   };
@@ -142,6 +140,7 @@
       mapCard.remove();
     }
     removeClassActivePins();
+    document.removeEventListener('keydown', cardEscPressHandler);
   };
 
   var opensCardByClickingOnPin = function () { // Перебирает пины присваивает им активный класс и по клику открывает карточку

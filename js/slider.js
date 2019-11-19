@@ -1,9 +1,11 @@
 'use strict';
 (function () {
-  var MAIN_PIN_WIDTH = 62;
+  var MAIN_PIN_WIDTH = 65;
+  var MAIN_PIN_HEIGHT = 65;
   var LOCATION_MAX_Y = 630;
   var LOCATION_MIN_Y = 130;
   var MAP_PIN_LEG = 20;
+
 
   var fieldAddress = document.getElementById('address');
   var mapPinMain = document.querySelector('.map__pin--main');
@@ -41,20 +43,20 @@
       styleLeft = (mapPinMain.offsetLeft - shift.x);
       styleTop = (mapPinMain.offsetTop - shift.y);
 
-      if (styleLeft >= widthMap - (MAIN_PIN_WIDTH / 2)) {
-        styleLeft = widthMap - MAIN_PIN_WIDTH / 2;
+      if (styleLeft >= widthMap - Math.floor(MAIN_PIN_WIDTH / 2)) {
+        styleLeft = widthMap - Math.floor(MAIN_PIN_WIDTH / 2);
       }
 
-      if (styleLeft <= 0 - MAIN_PIN_WIDTH / 2) {
-        styleLeft = 0 - MAIN_PIN_WIDTH / 2;
+      if (styleLeft <= 0 - Math.floor(MAIN_PIN_WIDTH / 2)) {
+        styleLeft = 0 - Math.floor(MAIN_PIN_WIDTH / 2);
       }
 
-      if (styleTop >= LOCATION_MAX_Y) {
-        styleTop = LOCATION_MAX_Y;
+      if (styleTop >= LOCATION_MAX_Y - MAIN_PIN_HEIGHT - MAP_PIN_LEG) {
+        styleTop = LOCATION_MAX_Y - MAIN_PIN_HEIGHT - MAP_PIN_LEG;
       }
 
-      if (styleTop <= LOCATION_MIN_Y) {
-        styleTop = LOCATION_MIN_Y;
+      if (styleTop <= LOCATION_MIN_Y - MAIN_PIN_HEIGHT - MAP_PIN_LEG) {
+        styleTop = LOCATION_MIN_Y - MAIN_PIN_HEIGHT - MAP_PIN_LEG;
       }
 
       mapPinMain.style.left = styleLeft + 'px';

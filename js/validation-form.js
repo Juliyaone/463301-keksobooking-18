@@ -114,7 +114,7 @@
   var housingRooms = document.querySelector('#housing-rooms');
   var housingGuests = document.querySelector('#housing-guests');
 
-  var resetPageHandler = function () {
+  var resetClickHandler = function () {
     housingType.value = 'any';
     housingPrice.value = 'any';
     housingRooms.value = 'any';
@@ -122,6 +122,9 @@
     window.inactivePage.deactivatesPage();
   };
 
-  reset.addEventListener('click', resetPageHandler);
+  reset.addEventListener('click', resetClickHandler);
 
+  window.validationForm = {
+    resetClickHandler: resetClickHandler
+  };
 })();
